@@ -1,0 +1,191 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "allow_rename": 1,
+ "autoname": "naming_series:",
+ "creation": "2021-06-07 20:09:01.950551",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "transaction_details_section",
+  "naming_series",
+  "transaction_number",
+  "transaction_owner_name",
+  "start_date",
+  "current_situation",
+  "priority",
+  "column_break_7",
+  "transaction_name",
+  "description",
+  "transaction_type",
+  "estimated_duration",
+  "add_voice",
+  "employee",
+  "employee_name",
+  "attachments_section",
+  "attachments_table",
+  "remarks_section",
+  "remarks_table",
+  "final_description_section",
+  "final_description",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "TRANSACTION-",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "TRANSACTION-",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Transaction",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "transaction_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Transaction Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "transaction_type",
+   "fieldtype": "Select",
+   "label": "Transaction Type",
+   "options": "Land Agency Transaction\nOther Agencies Transaction"
+  },
+  {
+   "fieldname": "transaction_number",
+   "fieldtype": "Int",
+   "label": "Transaction Number"
+  },
+  {
+   "fieldname": "priority",
+   "fieldtype": "Select",
+   "label": "Priority",
+   "options": "Normal\nUrgent\nVery Urgent"
+  },
+  {
+   "fieldname": "transaction_owner_name",
+   "fieldtype": "Data",
+   "label": "Transaction Owner Name"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Transaction Description"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Employee"
+  },
+  {
+   "fetch_from": "employee.employee_name",
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "start_date",
+   "fieldtype": "Date",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "estimated_duration",
+   "fieldtype": "Int",
+   "label": "Estimated Duration (Days)"
+  },
+  {
+   "fieldname": "current_situation",
+   "fieldtype": "Small Text",
+   "label": "Current Situation (Entity Description)"
+  },
+  {
+   "fieldname": "column_break_7",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "add_voice",
+   "fieldtype": "Attach",
+   "label": "Add Voice"
+  },
+  {
+   "fieldname": "attachments_section",
+   "fieldtype": "Section Break",
+   "label": "Attachments"
+  },
+  {
+   "fieldname": "attachments_table",
+   "fieldtype": "Table",
+   "label": "Attachments Table",
+   "options": "Attachments Table"
+  },
+  {
+   "fieldname": "transaction_details_section",
+   "fieldtype": "Section Break",
+   "label": "Transaction Details"
+  },
+  {
+   "fieldname": "remarks_section",
+   "fieldtype": "Section Break",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "remarks_table",
+   "fieldtype": "Table",
+   "label": "Remarks Table",
+   "options": "Remarks Table"
+  },
+  {
+   "fieldname": "final_description_section",
+   "fieldtype": "Section Break",
+   "label": "Final Description"
+  },
+  {
+   "fieldname": "final_description",
+   "fieldtype": "Text Editor",
+   "label": "Final Description"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-06-07 21:31:17.206459",
+ "modified_by": "Administrator",
+ "module": "Slnee Todo",
+ "name": "Transaction",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "transaction_name",
+ "track_changes": 1,
+ "track_seen": 1,
+ "track_views": 1
+}
