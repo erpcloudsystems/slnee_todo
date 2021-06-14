@@ -13,21 +13,25 @@
   "transaction_number",
   "transaction_owner_name",
   "start_date",
+  "estimated_duration",
+  "status",
   "current_situation",
   "priority",
   "column_break_7",
+  "posting_date",
   "transaction_name",
   "description",
   "transaction_type",
-  "estimated_duration",
   "add_voice",
   "employee",
   "employee_name",
   "attachments_section",
   "attachments_table",
   "remarks_section",
+  "general_remarks",
   "remarks_table",
   "final_description_section",
+  "end_date",
   "final_description",
   "amended_from"
  ],
@@ -53,6 +57,7 @@
   {
    "fieldname": "transaction_name",
    "fieldtype": "Data",
+   "in_filter": 1,
    "in_list_view": 1,
    "label": "Transaction Name",
    "reqd": 1
@@ -71,12 +76,16 @@
   {
    "fieldname": "priority",
    "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Priority",
    "options": "Normal\nUrgent\nVery Urgent"
   },
   {
    "fieldname": "transaction_owner_name",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Transaction Owner Name"
   },
   {
@@ -94,14 +103,16 @@
    "fetch_from": "employee.employee_name",
    "fieldname": "employee_name",
    "fieldtype": "Data",
+   "in_standard_filter": 1,
    "label": "Employee Name",
    "read_only": 1
   },
   {
-   "default": "Today",
    "fieldname": "start_date",
    "fieldtype": "Date",
-   "label": "Start Date"
+   "in_standard_filter": 1,
+   "label": "Start Date",
+   "reqd": 1
   },
   {
    "fieldname": "estimated_duration",
@@ -158,12 +169,41 @@
    "fieldname": "final_description",
    "fieldtype": "Text Editor",
    "label": "Final Description"
+  },
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Date",
+   "in_standard_filter": 1,
+   "label": "End Date"
+  },
+  {
+   "allow_on_submit": 1,
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Status",
+   "options": "Active\nLate\nToo Late",
+   "read_only": 1
+  },
+  {
+   "fieldname": "general_remarks",
+   "fieldtype": "Small Text",
+   "label": "General Remarks"
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "label": "Posting Date",
+   "reqd": 1
   }
  ],
+ "hide_toolbar": 1,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-07 21:31:17.206459",
+ "modified": "2021-06-14 10:12:40.089968",
  "modified_by": "Administrator",
  "module": "Slnee Todo",
  "name": "Transaction",

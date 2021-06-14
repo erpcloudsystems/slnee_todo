@@ -1,4 +1,5 @@
 {
+ "cards_label": "Slnee ToDo",
  "category": "Modules",
  "charts": [],
  "creation": "2021-06-08 12:11:31.650198",
@@ -16,14 +17,31 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Transaction",
+   "label": "Transactions Management",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Transactions",
    "link_to": "Transaction",
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Transactions Following Report",
+   "link_to": "Transactions Following Report",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2021-06-08 12:11:31.650198",
+ "modified": "2021-06-08 23:08:22.237127",
  "modified_by": "Administrator",
  "module": "Slnee Todo",
  "name": "Slnee ToDo",

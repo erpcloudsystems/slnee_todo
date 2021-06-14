@@ -99,24 +99,29 @@ app_license = "MIT"
 
 # Scheduled Tasks
 # ---------------
+scheduler_events = {
+    "all": [
+        "slnee_todo.doctype.transaction.update_transaction_status"
+    ],
+    "daily": [
+        "slnee_todo.doctype.transaction.update_transaction_status"
+    ],
+    "hourly": [
+        "slnee_todo.doctype.transaction.update_transaction_status"
+    ],
+    "weekly": [
+        "slnee_todo.doctype.transaction.update_transaction_status"
+    ],
+    "monthly": [
+        "slnee_todo.doctype.transaction.update_transaction_status"
+    ],
+    "cron": {
+            "32 16 * * *": [
+                "slnee_todo.doctype.transaction.update_transaction_status"
+            ],
+    }
+}
 
-# scheduler_events = {
-# 	"all": [
-# 		"slnee_todo.tasks.all"
-# 	],
-# 	"daily": [
-# 		"slnee_todo.tasks.daily"
-# 	],
-# 	"hourly": [
-# 		"slnee_todo.tasks.hourly"
-# 	],
-# 	"weekly": [
-# 		"slnee_todo.tasks.weekly"
-# 	]
-# 	"monthly": [
-# 		"slnee_todo.tasks.monthly"
-# 	]
-# }
 
 # Testing
 # -------
@@ -146,24 +151,24 @@ app_license = "MIT"
 # --------------------
 
 user_data_fields = [
-	{
-		"doctype": "{doctype_1}",
-		"filter_by": "{filter_by}",
-		"redact_fields": ["{field_1}", "{field_2}"],
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_2}",
-		"filter_by": "{filter_by}",
-		"partial": 1,
-	},
-	{
-		"doctype": "{doctype_3}",
-		"strict": False,
-	},
-	{
-		"doctype": "{doctype_4}"
-	}
+    {
+        "doctype": "{doctype_1}",
+        "filter_by": "{filter_by}",
+        "redact_fields": ["{field_1}", "{field_2}"],
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_2}",
+        "filter_by": "{filter_by}",
+        "partial": 1,
+    },
+    {
+        "doctype": "{doctype_3}",
+        "strict": False,
+    },
+    {
+        "doctype": "{doctype_4}"
+    }
 ]
 
 # Authentication and authorization
@@ -172,4 +177,3 @@ user_data_fields = [
 # auth_hooks = [
 # 	"slnee_todo.auth.validate"
 # ]
-
