@@ -25,7 +25,14 @@ from frappe.model.document import Document
 
 
 class Transaction(Document):
+	def on_submit(self):
+		self.update_end_date()
 
+	def update_end_date(self):
+		frappe.db.commit()
+		if self.workflow_state == "Done":
+			frappe.db.sql("""update `tabTransaction` set end_date = %s where name=%s """, (nowdate(), self.name))
+			self.reload()
 
 	def update_transaction_status(self):
 		x = (2 * self.estimated_duration)

@@ -1,73 +1,223 @@
 import frappe
+from frappe import auth
+import datetime
+import json, ast
+
+
+
+current_date = datetime.datetime.today().strftime('%Y-%m-%d')
+current_user = frappe.session.user
+
 
 @frappe.whitelist(allow_guest=True)
-def login(username, password):
-	login_manager = LoginManager()
-	login_manager.authenticate(username,password)
-	login_manager.post_login()
+def login(usr, pwd):
+    try:
+        login_manager = frappe.auth.LoginManager()
+        login_manager.authenticate(user=usr, pwd=pwd)
+        login_manager.post_login()
 
-	if frappe.response['message'] == 'Logged In':
-		user = frappe.db.get_value("User", {"user": login_manager.user}, "name")
+    except frappe.exceptions.AuthenticationError:
+        frappe.clear_messages()
+        frappe.local.response["message"] = {
+            "success_key": true,
+            "message": "Authentication Failed"
+        }
 
-		if user:return user
-        else:
-	        return "No user Found."
+        return
+
+    api_generate = generate_keys(frappe.session.user)
+    user = frappe.get_doc('User', frappe.session.user)
+
+
+    frappe.response["message"] = {
+        "success_key": True,
+        "message": "Authentication Success",
+        "sid": frappe.session.sid,
+        "api_key": user.api_key,
+        "api_secret": api_generate,
+        "email": user.email
+    }
+
+    return
+
+
+def generate_keys(user):
+    user_details = frappe.get_doc('User', user)
+    api_secret = frappe.generate_hash(length=15)
+
+    if not user_details.api_key:
+        api_key = frappe.generate_hash(length=15)
+        user_details.api_key = api_key
+
+    user_details.api_secret = api_secret
+    user_details.save()
+    return api_secret
 
 # ------------------------------------------------------------------------------------
 
-# Add all the fields for which data you capture from the frontend app
 @frappe.whitelist()
-def add_task(token, subject):
-    task = frappe.get_doc({"doctype":"Task",
-      "subject": subject
+def add_transaction(transaction_name, start_date, priority,transaction_number,transaction_owner_name,estimated_duration,current_situation,description,transaction_type,add_voice,employee,general_remarks,final_description):
+
+    transaction = frappe.get_doc({"doctype":"Transaction",
+      "transaction_name": transaction_name,
+      "transaction_number": transaction_number,
+      "transaction_owner_name": transaction_owner_name,
+      "start_date": start_date,
+      "estimated_duration": estimated_duration,
+      "current_situation": current_situation,
+      "priority": priority,
+      "description": description,
+      "transaction_type": transaction_type,
+      "add_voice": add_voice,
+      "employee": employee,
+      "general_remarks": general_remarks,
+      "final_description": final_description
+
     })
 
-    task.insert()
+    transaction.insert()
+    transaction_id = transaction.name
     frappe.db.commit()
 
-    if(task):
-        return True
-    else:
-        return "We encountered an error!"
+    if(transaction):
+        message = frappe.response["message"] = {
+            "success_key": True,
+            "message": "transaction added!",
+            "transaction_id": transaction_id
+        }
+        return message
+    else:return "We encountered an error!"
 
 
 # ------------------------------------------------------------------------------------
-
-# [tabTask Docs] should be replaced with the table which contains the task files 
-# [file_name] should be replaced with the name of the field receiving the files
 @frappe.whitelist()
-def upload_attachment(task_id, attachment):
-    upload_files = frappe.db.sql(f"""UPDATE `tabTask Docs` SET file_name={attachment} WHERE name='{task_id}';""")
+def attachments(transaction_id, file, attachment_name):
+    attachment = frappe.get_doc({"doctype":"Attachments Table",
+      "parenttype": "Transaction",
+      "parentfield": "attachments_table",
+      "parent": transaction_id,
+      "attachment": file,
+      "attachment_name ": attachment_name
+    })
+
+    attachment.insert()
     frappe.db.commit()
 
-    if(upload_files):
-        return True
+    if(attachment):
+        return attachment
     else:
-        return False
+        return "Error encountered!"
 
 # ------------------------------------------------------------------------------------
 
-# Other than the [title], please add all the other field names you need to send from the frontend app
 @frappe.whitelist()
-def task_note(token, task_id, title):
-    task_note = frappe.db.sql(f"""UPDATE `tabNote` SET title={title} WHERE name='{task_id}';""")
+def transaction_remark(transaction_id, remark):
+    remark = frappe.get_doc({"doctype":"Remarks Table",
+      "parenttype": "Transaction",
+      "parentfield": "remarks_table",
+      "parent": transaction_id,
+      "user": current_user,
+      "remark": remark,
+      "remark_date": current_date
+    })
+
+    remark.insert()
     frappe.db.commit()
 
-    if(task_note):
-        return True
+    if remark:
+        message = frappe.response["message"] = {
+            "success_key": True,
+            "message": "remark has been added!"
+        }
+        return message
     else:
-        return False
+        return "Error encountered!"
 
 # ------------------------------------------------------------------------------------
 
 # You can replace [*] with the fields you need from your database table
 # Replace [critetia_field] with the appropriate field from your table
 # Please let me know what you meant by [page number]
-@frappe.whitelist()
-def list_tasks(criteria, token):
-    tasks = frappe.db.sql(f"""SELECT * FROM `tabTasks` WHERE critetia_field={criteria};""", as_dict=True)
 
-    if(tasks):
-        return tasks
+@frappe.whitelist()
+def list_transaction(transaction_number,transaction_owner_name,start_date,current_situation, priority ,posting_date,transaction_name,description,transaction_type,employee,employee_name,final_description,general_remarks):
+    conditions=''
+    if employee:
+        conditions += "and `tabTransaction`.employee like {employee}".format(employee=employee)
+    if transaction_number:
+        conditions += "and `tabTransaction`.transaction_number like {transaction_number}".format(transaction_number=transaction_number)
+    if transaction_owner_name:
+        conditions += "and transaction_owner_name like {transaction_owner_name}".format(transaction_owner_name=transaction_owner_name)
+    if start_date:
+        conditions += "and start_date like {start_date}".format(start_date=start_date)
+    if current_situation:
+        conditions += "and current_situation like {current_situation}".format(current_situation=current_situation)
+    if priority:
+        conditions += "and priority = {priority}".format(priority=priority)
+    if posting_date:
+        conditions += "and posting_date = {posting_date}".format(posting_date=posting_date)
+    if transaction_name:
+        conditions += "and transaction_name like {transaction_name}".format(transaction_name=transaction_name)
+    if description:
+        conditions += "and description like '%{description}%'".format(description=description)
+    if transaction_type:
+        conditions += "and transaction_type like {transaction_type}".format(transaction_type=transaction_type)
+    if employee_name:
+        conditions += "and employee_name like {employee_name}".format(employee_name=employee_name)
+    if final_description:
+        conditions += "and final_description like {final_description}".format(final_description=final_description)
+    if general_remarks:
+        conditions += "and `tabTransaction`.general_remarks like {general_remarks}".format(general_remarks=general_remarks)
+
+    all_transaction = frappe.db.sql("""SELECT * FROM `tabTransaction` where docstatus !=2 {conditions}""".format(conditions=conditions), as_dict=1)
+
+    if (all_transaction):
+        return all_transaction
     else:
-        return "No Tasks found!"
+        return "No Transaction found!"
+
+@frappe.whitelist()
+def priority_options():
+    get_proirity = frappe.db.sql(""" select name,value from `tabTransaction Priority` """, as_dict=True)
+
+    if get_proirity:
+        return get_proirity
+    else:
+        return "No options found !"
+
+@frappe.whitelist()
+def transaction_type_options():
+    get_transaction_type = frappe.db.sql(""" select name,value from `tabTransaction Type`""",as_dict=True)
+
+    if get_transaction_type:
+        return get_transaction_type
+    else:
+        return "No options found !"
+
+
+@frappe.whitelist()
+def list_employee():
+    all_employee = frappe.db.sql("""SELECT name,employee_name,department FROM `tabEmployee` where status ='Active'""",as_dict=True)
+
+    if all_employee:
+        return all_employee
+    else:
+        return "No Employee Fonud !"
+
+@frappe.whitelist()
+def list_remarks(transaction_id):
+    all_remarks = frappe.db.sql("""SELECT * FROM `tabRemarks Table` where parent =%s""",transaction_id,as_dict=True)
+
+    if all_remarks:
+        return all_remarks
+    else:
+        return "No Employee Fonud !"
+
+@frappe.whitelist()
+def list_attachments(transaction_id):
+    all_attachments = frappe.db.sql("""SELECT * FROM `tabAttachments Table` where parent =%s""",transaction_id,as_dict=True)
+
+    if all_attachments:
+        return all_attachments
+    else:
+        return "No Employee Fonud !"
