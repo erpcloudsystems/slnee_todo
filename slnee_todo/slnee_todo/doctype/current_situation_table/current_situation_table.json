@@ -1,0 +1,54 @@
+{
+ "actions": [],
+ "creation": "2021-06-26 17:00:12.553932",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "current_situation",
+  "column_break_2",
+  "input_user",
+  "input_date"
+ ],
+ "fields": [
+  {
+   "fieldname": "current_situation",
+   "fieldtype": "Small Text",
+   "in_list_view": 1,
+   "label": "Current Situation (Entity Description)"
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "user",
+   "fieldname": "input_user",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Input User",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "input_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Input Date",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2021-06-26 17:03:26.980352",
+ "modified_by": "Administrator",
+ "module": "Slnee Todo",
+ "name": "Current Situation Table",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "track_changes": 1
+}
