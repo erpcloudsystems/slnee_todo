@@ -12,7 +12,8 @@
   "doc_status",
   "transaction_details_section",
   "naming_series",
-  "transaction_number",
+  "transaction_name",
+  "transaction_no",
   "transaction_owner_name",
   "start_date",
   "estimated_duration",
@@ -21,14 +22,10 @@
   "priority",
   "column_break_7",
   "posting_date",
-  "transaction_name",
   "description",
   "transaction_type",
-  "add_voice",
   "employee",
   "employee_name",
-  "attachments_section",
-  "attachments_table",
   "remarks_section",
   "general_remarks",
   "remarks_table",
@@ -62,20 +59,13 @@
    "in_filter": 1,
    "in_list_view": 1,
    "label": "Transaction Name",
-   "permlevel": 2,
-   "reqd": 1
+   "permlevel": 2
   },
   {
    "fieldname": "transaction_type",
    "fieldtype": "Link",
    "label": "Transaction Type",
    "options": "Transaction Type",
-   "permlevel": 2
-  },
-  {
-   "fieldname": "transaction_number",
-   "fieldtype": "Int",
-   "label": "Transaction Number",
    "permlevel": 2
   },
   {
@@ -144,25 +134,6 @@
    "fieldtype": "Column Break"
   },
   {
-   "fieldname": "add_voice",
-   "fieldtype": "Attach",
-   "label": "Add Voice",
-   "permlevel": 2
-  },
-  {
-   "fieldname": "attachments_section",
-   "fieldtype": "Section Break",
-   "label": "Attachments",
-   "permlevel": 1
-  },
-  {
-   "fieldname": "attachments_table",
-   "fieldtype": "Table",
-   "label": "Attachments Table",
-   "options": "Attachments Table",
-   "permlevel": 1
-  },
-  {
    "fieldname": "transaction_details_section",
    "fieldtype": "Section Break",
    "label": "Transaction Details"
@@ -226,6 +197,7 @@
   },
   {
    "allow_on_submit": 1,
+   "default": "Entering Data ...",
    "fieldname": "doc_status",
    "fieldtype": "Select",
    "hidden": 1,
@@ -233,12 +205,17 @@
    "label": "Doc Status",
    "options": "\nEntering Data ...\nUnder Process\nWith Office Manager\nModification Requested\nPending\nDone",
    "read_only": 1
+  },
+  {
+   "fieldname": "transaction_no",
+   "fieldtype": "Data",
+   "label": "Transaction No"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-06-26 19:25:45.242773",
+ "modified": "2021-07-05 14:03:30.633145",
  "modified_by": "Administrator",
  "module": "Slnee Todo",
  "name": "Transaction",

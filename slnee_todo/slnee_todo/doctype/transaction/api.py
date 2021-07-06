@@ -1,7 +1,9 @@
+from __future__ import unicode_literals
 import frappe
 from frappe import auth
 import datetime
 import json, ast
+
 
 
 
@@ -20,7 +22,7 @@ def login(usr, pwd):
         frappe.clear_messages()
         frappe.local.response["message"] = {
             "success_key": true,
-            "message": "Authentication Failed"
+            "message": "اسم المستخدم او كلمة المرور غير صحيحة !"
         }
 
         return
@@ -56,15 +58,14 @@ def generate_keys(user):
 # ------------------------------------------------------------------------------------
 
 @frappe.whitelist()
-def add_transaction(transaction_name, start_date, priority,transaction_number,transaction_owner_name,estimated_duration,current_situation,description,transaction_type,add_voice,employee,general_remarks,final_description):
+def add_transaction(transaction_name, start_date, priority,transaction_owner_name,estimated_duration,description,transaction_type,add_voice,employee,general_remarks,final_description):
+
 
     transaction = frappe.get_doc({"doctype":"Transaction",
       "transaction_name": transaction_name,
-      "transaction_number": transaction_number,
       "transaction_owner_name": transaction_owner_name,
       "start_date": start_date,
       "estimated_duration": estimated_duration,
-      "current_situation": current_situation,
       "priority": priority,
       "description": description,
       "transaction_type": transaction_type,
@@ -75,6 +76,7 @@ def add_transaction(transaction_name, start_date, priority,transaction_number,tr
 
     })
 
+
     transaction.insert()
     transaction_id = transaction.name
     frappe.db.commit()
@@ -82,11 +84,11 @@ def add_transaction(transaction_name, start_date, priority,transaction_number,tr
     if(transaction):
         message = frappe.response["message"] = {
             "success_key": True,
-            "message": "transaction added!",
+            "message": "تمت اضافة المعاملة بنجاح !",
             "transaction_id": transaction_id
         }
         return message
-    else:return "We encountered an error!"
+    else:return "حدث خطأ ولم نتمكن من اضافة المعاملة . برجاء المحاولة مرة اخري!"
 
 
 # ------------------------------------------------------------------------------------
@@ -112,7 +114,7 @@ def attachments(transaction_id, file, attachment_name):
 
 @frappe.whitelist()
 def transaction_remark(transaction_id, remark):
-    remark = frappe.get_doc({"doctype":"Remarks Table",
+    remarks = frappe.get_doc({"doctype":"Remarks Table",
       "parenttype": "Transaction",
       "parentfield": "remarks_table",
       "parent": transaction_id,
@@ -121,17 +123,42 @@ def transaction_remark(transaction_id, remark):
       "remark_date": current_date
     })
 
-    remark.insert()
+    remarks.insert()
     frappe.db.commit()
 
-    if remark:
+    if remarks:
         message = frappe.response["message"] = {
             "success_key": True,
-            "message": "remark has been added!"
+            "message": "تمت اضافة الملاحظة بنحاخ !"
         }
         return message
     else:
-        return "Error encountered!"
+        return "حدث خطأ ولم نتمكن من اضافة الملاحظة . برجاء المحاولة مرة اخري!"
+
+# ------------------------------------------------------------------------------------
+
+@frappe.whitelist()
+def transaction_situation(transaction_id, current_situation):
+    remarks = frappe.get_doc({"doctype":"Current Situation Table",
+      "parenttype": "Transaction",
+      "parentfield": "current_situation",
+      "parent": transaction_id,
+      "input_user": current_user,
+      "current_situation": current_situation,
+      "input_date": current_date
+    })
+
+    remarks.insert()
+    frappe.db.commit()
+
+    if remarks:
+        message = frappe.response["message"] = {
+            "success_key": True,
+            "message": "تم اضافة الوضع الحالي بنجاح !"
+        }
+        return message
+    else:
+        return "حدث خطأ ولم نتمكن من اضافة الوضع الحالي . برجاء المحاولة مرة اخري!"
 
 # ------------------------------------------------------------------------------------
 
@@ -140,41 +167,41 @@ def transaction_remark(transaction_id, remark):
 # Please let me know what you meant by [page number]
 
 @frappe.whitelist()
-def list_transaction(transaction_number,transaction_owner_name,start_date,current_situation, priority ,posting_date,transaction_name,description,transaction_type,employee,employee_name,final_description,general_remarks):
+def list_transaction(transaction_number,transaction_owner_name,start_date,current_situation, priorityy ,posting_date,transaction_name,description,transaction_type,employee,employee_name,final_description,general_remarks):
     conditions=''
     if employee:
         conditions += "and `tabTransaction`.employee like {employee}".format(employee=employee)
     if transaction_number:
-        conditions += "and `tabTransaction`.transaction_number like {transaction_number}".format(transaction_number=transaction_number)
+        conditions += "and `tabTransaction`.name like '%{transaction_number}%'".format(transaction_number=transaction_number)
     if transaction_owner_name:
-        conditions += "and transaction_owner_name like {transaction_owner_name}".format(transaction_owner_name=transaction_owner_name)
+        conditions += "and `tabTransaction`.transaction_owner_name like {transaction_owner_name}".format(transaction_owner_name=transaction_owner_name)
     if start_date:
-        conditions += "and start_date like {start_date}".format(start_date=start_date)
+        conditions += "and `tabTransaction`.start_date like {start_date}".format(start_date=start_date)
     if current_situation:
-        conditions += "and current_situation like {current_situation}".format(current_situation=current_situation)
-    if priority:
-        conditions += "and priority = {priority}".format(priority=priority)
+        conditions += "and `tabTransaction`.current_situation like {current_situation}".format(current_situation=current_situation)
+    if priorityy:
+        conditions += "and `tabTransaction`.priority like '%{priority}%'".format(priority=priorityy)
     if posting_date:
-        conditions += "and posting_date = {posting_date}".format(posting_date=posting_date)
+        conditions += "and `tabTransaction`.posting_date = {posting_date}".format(posting_date=posting_date)
     if transaction_name:
-        conditions += "and transaction_name like {transaction_name}".format(transaction_name=transaction_name)
+        conditions += "and `tabTransaction`.transaction_name like '%{transaction_name}%'".format(transaction_name=transaction_name)
     if description:
-        conditions += "and description like '%{description}%'".format(description=description)
+        conditions += "and `tabTransaction`.description like '%{description}%'".format(description=description)
     if transaction_type:
-        conditions += "and transaction_type like {transaction_type}".format(transaction_type=transaction_type)
+        conditions += "and `tabTransaction`.transaction_type like '%{transaction_type}%'".format(transaction_type=transaction_type)
     if employee_name:
-        conditions += "and employee_name like {employee_name}".format(employee_name=employee_name)
+        conditions += "and `tabTransaction`.employee_name like '%{employee_name}%'".format(employee_name=employee_name)
     if final_description:
-        conditions += "and final_description like {final_description}".format(final_description=final_description)
+        conditions += "and `tabTransaction`.final_description like '%{final_description}%'".format(final_description=final_description)
     if general_remarks:
-        conditions += "and `tabTransaction`.general_remarks like {general_remarks}".format(general_remarks=general_remarks)
+        conditions += "and `tabTransaction`.general_remarks like '%{general_remarks}%'".format(general_remarks=general_remarks)
 
     all_transaction = frappe.db.sql("""SELECT * FROM `tabTransaction` where docstatus !=2 {conditions}""".format(conditions=conditions), as_dict=1)
 
     if (all_transaction):
         return all_transaction
     else:
-        return "No Transaction found!"
+        return "لا توجد معاملات برجاء البحث مرة اخرى"
 
 @frappe.whitelist()
 def priority_options():
@@ -183,7 +210,7 @@ def priority_options():
     if get_proirity:
         return get_proirity
     else:
-        return "No options found !"
+        return "لا توجد خيارات متاحة !"
 
 @frappe.whitelist()
 def transaction_type_options():
@@ -192,7 +219,7 @@ def transaction_type_options():
     if get_transaction_type:
         return get_transaction_type
     else:
-        return "No options found !"
+        return "لا توجد انواع متاحة !"
 
 
 @frappe.whitelist()
@@ -202,22 +229,29 @@ def list_employee():
     if all_employee:
         return all_employee
     else:
-        return "No Employee Fonud !"
+        return "لا يوجد موظفين !"
 
 @frappe.whitelist()
 def list_remarks(transaction_id):
     all_remarks = frappe.db.sql("""SELECT * FROM `tabRemarks Table` where parent =%s""",transaction_id,as_dict=True)
-
     if all_remarks:
         return all_remarks
     else:
-        return "No Employee Fonud !"
+        return "لا توجد ملاحظات على المعاملة !"
+
+@frappe.whitelist()
+def list_situation(transaction_id):
+    all_situation = frappe.db.sql("""SELECT * FROM `tabCurrent Situation Table` where parent =%s""",transaction_id,as_dict=True)
+    if all_situation:
+        return all_situation
+    else:
+        return "لم يتم تسجيل اي موقف يخص المعاملة !"
 
 @frappe.whitelist()
 def list_attachments(transaction_id):
-    all_attachments = frappe.db.sql("""SELECT * FROM `tabAttachments Table` where parent =%s""",transaction_id,as_dict=True)
+    all_attachments = frappe.db.sql("""SELECT * FROM `tabFile` where attached_to_name =%s""",transaction_id,as_dict=True)
 
     if all_attachments:
         return all_attachments
     else:
-        return "No Employee Fonud !"
+        return "لا يوجد مرفقات على المعامله !"
