@@ -1,0 +1,42 @@
+<h2 class="text-center" style="font-family:Cairo">{%= __("بيان متابعة معاملات مكتب سمو الأمين") %}</h2>
+
+<h5 class="text-center" style="font-family:Cairo">
+<b>	{%= __("خلال الفترة من ") %}</b>
+	{%= frappe.datetime.str_to_user(filters.from_date) %}
+<b>{%= __("إلى") %}</b>
+	{%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+<hr>
+
+<table class="table table-bordered" style="font-family:Cairo" dir="rtl">
+	<thead>
+		<tr>
+			<th class="text-center">{%= __("Transaction No.") %}</th>
+			<th class="text-center">{%= __("Transaction State") %}</th>
+			<th class="text-center">{%= __("Transaction Owner Name") %}</th>
+			<th class="text-center">{%= __("Transaction Name") %}</th>
+			<th class="text-center">{%= __("Transaction Type") %}</th>
+			<th class="text-center">{%= __("Start Date") %}</th>
+			<th class="text-center">{%= __("End Date") %}</th>
+			<th class="text-center">{%= __("Current Situation") %}</th>
+			<th class="text-center">{%= __("Remarks") %}</th>
+			<th class="text-center">{%= __("No. Of Attachments") %}</th>
+		</tr>
+	</thead>
+	<tbody>
+	{% for(var i=0, l=data.length; i<l; i++) { %}
+	<tr>
+		<td>{%= data[i].transaction_number %}</td>
+		<td>{%= __(data[i].workflow_state) %}</td>
+		<td>{%= data[i].transaction_owner_name %}</td>
+		<td>{%= data[i].transaction_name %}</td>
+		<td>{%= data[i].transaction_type %}</td>
+		<td>{%= data[i].start_date %}</td>
+		<td>{%= data[i].end_date %}</td>
+		<td>{%= data[i].current_situation %}</td>
+		<td>{%= data[i].remarks %}</td>
+		<td>{%= data[i].attachments_no %}</td>
+	</tr>
+	{% } %}
+	</tbody>
+</table>

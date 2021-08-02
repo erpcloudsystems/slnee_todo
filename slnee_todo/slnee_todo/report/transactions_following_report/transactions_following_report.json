@@ -9,16 +9,16 @@
  "filters": [],
  "idx": 0,
  "is_standard": "Yes",
- "modified": "2021-06-26 19:23:40.281566",
+ "modified": "2021-07-12 13:29:44.977506",
  "modified_by": "Administrator",
  "module": "Slnee Todo",
  "name": "Transactions Following Report",
  "owner": "Administrator",
  "prepared_report": 0,
- "query": "SELECT\n`tabTransaction`.name as \"Transaction :Link/Transaction:170\",\n`tabTransaction`.transaction_number as \"Transaction No.::125\",\n`tabTransaction`.workflow_state as \"Workflow State::140\",\n`tabTransaction`.transaction_name as \"Transaction Name::200\",\n`tabTransaction`.transaction_owner_name as \"Transaction Owner Name::180\",\n`tabTransaction`.transaction_type as \"Transaction Type::200\",\n`tabTransaction`.general_remarks as \"General Remarks::200\"\n\nFROM\n`tabTransaction`\n\nWHERE\n\n `tabTransaction`.posting_date between %(from_date)s and %(to_date)s\n\nORDER BY `tabTransaction`.name desc",
+ "query": "SELECT\n`tabTransaction`.name as \"Transaction:Link/Transaction:120\",\n`tabTransaction`.transaction_number as \"Transaction No.::125\",\n`tabTransaction`.workflow_state as \"Transaction State::140\",\n`tabTransaction`.transaction_owner_name as \"Transaction Owner Name::180\",\n`tabTransaction`.transaction_name as \"Transaction Name::200\",\n`tabTransaction`.transaction_type as \"Transaction Type::200\",\n`tabTransaction`.start_date as \"Start Date:Date:120\",\n`tabTransaction`.end_date as \"End Date:Date:120\",\n\n(SELECT `tabCurrent Situation Table`.current_situation \nFROM `tabCurrent Situation Table`\nWHERE `tabCurrent Situation Table`.parent = `tabTransaction`.name\nORDER BY idx DESC LIMIT 1) as \"Current Situation::300\",\n\n(SELECT GROUP_CONCAT(`tabRemarks Table`.remark order by idx separator '<br><li>')\nFROM `tabRemarks Table`\nWHERE `tabRemarks Table`.parent = `tabTransaction`.name) as \"Remarks::300\",\n\n(SELECT GROUP_CONCAT(`tabFile`.file_name order by idx separator '<br><li>')\nFROM `tabFile`\nWHERE `tabFile`.attached_to_name = `tabTransaction`.name) as \"Attachments::300\"\n\nFROM\n`tabTransaction`\n\nWHERE\n`tabTransaction`.posting_date between %(from_date)s and %(to_date)s\n\nORDER BY `tabTransaction`.name asc",
  "ref_doctype": "Transaction",
  "report_name": "Transactions Following Report",
- "report_type": "Query Report",
+ "report_type": "Script Report",
  "roles": [
   {
    "role": "System Manager"

@@ -13,7 +13,7 @@
   "transaction_details_section",
   "naming_series",
   "transaction_name",
-  "transaction_no",
+  "transaction_number",
   "transaction_owner_name",
   "start_date",
   "estimated_duration",
@@ -27,7 +27,6 @@
   "employee",
   "employee_name",
   "remarks_section",
-  "general_remarks",
   "remarks_table",
   "final_description_section",
   "end_date",
@@ -127,7 +126,8 @@
    "fieldtype": "Table",
    "label": "Current Situation (Entity Description)",
    "options": "Current Situation Table",
-   "permlevel": 2
+   "permlevel": 2,
+   "reqd": 1
   },
   {
    "fieldname": "column_break_7",
@@ -181,13 +181,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "general_remarks",
-   "fieldtype": "Small Text",
-   "in_list_view": 1,
-   "label": "General Remarks",
-   "permlevel": 2
-  },
-  {
    "default": "Today",
    "fieldname": "posting_date",
    "fieldtype": "Date",
@@ -207,7 +200,7 @@
    "read_only": 1
   },
   {
-   "fieldname": "transaction_no",
+   "fieldname": "transaction_number",
    "fieldtype": "Data",
    "label": "Transaction No"
   }
@@ -215,7 +208,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-07-05 14:03:30.633145",
+ "modified": "2021-07-11 11:38:31.602135",
  "modified_by": "Administrator",
  "module": "Slnee Todo",
  "name": "Transaction",

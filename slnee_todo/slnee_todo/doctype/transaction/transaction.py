@@ -45,3 +45,10 @@ class Transaction(Document):
 			self.status = 'Active'
 
 	pass
+
+@frappe.whitelist()
+def completed_progress():
+	completed = frappe.db.count('Requests Table')
+
+	asd = float(completed)
+	return asd

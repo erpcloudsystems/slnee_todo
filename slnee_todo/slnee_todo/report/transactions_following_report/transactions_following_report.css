@@ -1,0 +1,201 @@
+if (column.fieldname == "transaction_number" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "Done") {
+                     value = "<span style='color:green;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_number" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "Under Process") {
+                     value = "<span style='color:orange;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_number" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "With Office Manager") {
+                     value = "<span style='color:blue;'>" + value + "</span>";
+                }
+                if (column.fieldname == "name" && data) {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_number" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "Entering Data ...") {
+                     value = "<span style='color:black;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_number" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "Pending") {
+                     value = "<span style='color:red;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_number" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "workflow_state" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_owner_name" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_name" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "transaction_type" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "start_date" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "end_date" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "current_situation" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "remarks" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments_no" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
+                if (column.fieldname == "attachments" && data && data.workflow_state == "Modification Requested") {
+                     value = "<span style='color:purple;'>" + value + "</span>";
+                }
