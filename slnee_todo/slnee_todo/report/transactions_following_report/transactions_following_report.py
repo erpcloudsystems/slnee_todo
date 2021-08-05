@@ -101,7 +101,7 @@ def get_item_price_qty_data(filters):
 	if filters.get("to_date"):
 		conditions += " and `tabTransaction`.posting_date<=%(to_date)s"
 	item_results = frappe.db.sql("""
-				SELECT
+				select
 						`tabTransaction`.name as name  ,
 						`tabTransaction`.transaction_number as transaction_number,
 						`tabTransaction`.workflow_state as workflow_state,
@@ -128,10 +128,10 @@ def get_item_price_qty_data(filters):
 						FROM `tabFile`
 						WHERE `tabFile`.attached_to_name = `tabTransaction`.name) as attachments
 
-				FROM
+				from
 				`tabTransaction`
 				
-				WHERE
+				where
 				`tabTransaction`.docstatus != 2
 				{conditions}
 					
