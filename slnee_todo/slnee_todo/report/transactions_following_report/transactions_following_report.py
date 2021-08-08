@@ -19,12 +19,6 @@ def get_columns():
 			"fieldname": "name",
 			"fieldtype": "Link",
 			"options": "Transaction",
-			"width": 120
-		},
-		{
-			"label": _("Transaction No."),
-			"fieldname": "transaction_number",
-			"fieldtype": "Data",
 			"width": 125
 		},
 		{
@@ -34,10 +28,16 @@ def get_columns():
 			"width": 140
 		},
 		{
+			"label": _("Transaction No"),
+			"fieldname": _("transaction_number"),
+			"fieldtype": "Data",
+			"width": 140
+		},
+		{
 			"label": _("Transaction Owner Name"),
 			"fieldname": "transaction_owner_name",
 			"fieldtype": "Data",
-			"width": 180
+			"width": 190
 		},
 		{
 			"label": _("Transaction Name"),
@@ -63,6 +63,7 @@ def get_columns():
 			"fieldtype": "Date",
 			"width": 120
 		},
+
 		{
 			"label": _("Current Situation"),
 			"fieldname": "current_situation",
@@ -97,12 +98,12 @@ def get_data(filters, columns):
 def get_item_price_qty_data(filters):
 	conditions = ""
 	if filters.get("from_date"):
-		conditions += " and `tabTransaction`.posting_date>=%(from_date)s"
+		conditions += " and `tabTransaction`.start_date>=%(from_date)s"
 	if filters.get("to_date"):
-		conditions += " and `tabTransaction`.posting_date<=%(to_date)s"
+		conditions += " and `tabTransaction`.start_date<=%(to_date)s"
 	item_results = frappe.db.sql("""
 				select
-						`tabTransaction`.name as name  ,
+						`tabTransaction`.name as name,
 						`tabTransaction`.transaction_number as transaction_number,
 						`tabTransaction`.workflow_state as workflow_state,
 						`tabTransaction`.transaction_owner_name as transaction_owner_name,
@@ -110,6 +111,7 @@ def get_item_price_qty_data(filters):
 						`tabTransaction`.transaction_type as transaction_type,
 						`tabTransaction`.start_date as start_date,
 						`tabTransaction`.end_date as end_date,
+						`tabTransaction`.status as status,
 		
 						(SELECT `tabCurrent Situation Table`.current_situation 
 						FROM `tabCurrent Situation Table`
@@ -151,12 +153,13 @@ def get_item_price_qty_data(filters):
 			data = {
 				'name': item_dict.name,
 				'transaction_number': item_dict.transaction_number,
-				'workflow_state': item_dict.workflow_state,
+				'workflow_state': _(item_dict.workflow_state),
 				'transaction_owner_name': item_dict.transaction_owner_name,
 				'transaction_name': item_dict.transaction_name,
 				'transaction_type': item_dict.transaction_type,
 				'start_date': item_dict.start_date,
 				'end_date': item_dict.end_date,
+				'status': item_dict.status,
 				'current_situation': item_dict.current_situation,
 				'remarks': item_dict.remarks,
 				'attachments_no': item_dict.attachments_no,

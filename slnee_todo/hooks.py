@@ -101,25 +101,8 @@ app_license = "MIT"
 # ---------------
 scheduler_events = {
     "all": [
-        "slnee_todo.doctype.transaction.update_transaction_status"
-    ],
-    "daily": [
-        "slnee_todo.doctype.transaction.update_transaction_status"
-    ],
-    "hourly": [
-        "slnee_todo.doctype.transaction.update_transaction_status"
-    ],
-    "weekly": [
-        "slnee_todo.doctype.transaction.update_transaction_status"
-    ],
-    "monthly": [
-        "slnee_todo.doctype.transaction.update_transaction_status"
-    ],
-    "cron": {
-            "32 16 * * *": [
-                "slnee_todo.doctype.transaction.update_transaction_status"
-            ],
-    }
+        "slnee_todo.slnee_todo.doctype.transaction.transaction.update_transaction_status"
+    ]
 }
 
 
