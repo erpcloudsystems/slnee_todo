@@ -12,6 +12,11 @@ app_license = "MIT"
 # Includes in <head>
 # ------------------
 
+scheduler_events = {
+    "all": [
+        "slnee_todo.slnee_todo.doctype.transaction.transaction.update_transaction_status"
+    ]
+}
 # include js, css files in header of desk.html
 # app_include_css = "/assets/slnee_todo/css/slnee_todo.css"
 # app_include_js = "/assets/slnee_todo/js/slnee_todo.js"
@@ -99,12 +104,24 @@ app_license = "MIT"
 
 # Scheduled Tasks
 # ---------------
-scheduler_events = {
-    "all": [
-        "slnee_todo.slnee_todo.doctype.transaction.transaction.update_transaction_status"
-    ]
-}
 
+# scheduler_events = {
+# 	"all": [
+# 		"riadco.tasks.all"
+# 	],
+# 	"daily": [
+# 		"riadco.tasks.daily"
+# 	],
+# 	"hourly": [
+# 		"riadco.tasks.hourly"
+# 	],
+# 	"weekly": [
+# 		"riadco.tasks.weekly"
+# 	]
+# 	"monthly": [
+# 		"riadco.tasks.monthly"
+# 	]
+# }
 
 # Testing
 # -------
