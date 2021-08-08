@@ -107,19 +107,19 @@ scheduler_events = {
 
 # scheduler_events = {
 # 	"all": [
-# 		"riadco.tasks.all"
+# 		"slnee_todo.tasks.all"
 # 	],
 # 	"daily": [
-# 		"riadco.tasks.daily"
+# 		"slnee_todo.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"riadco.tasks.hourly"
+# 		"slnee_todo.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"riadco.tasks.weekly"
+# 		"slnee_todo.tasks.weekly"
 # 	]
 # 	"monthly": [
-# 		"riadco.tasks.monthly"
+# 		"slnee_todo.tasks.monthly"
 # 	]
 # }
 
