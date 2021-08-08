@@ -25,30 +25,45 @@ from frappe.model.document import Document
 
 
 class Transaction(Document):
+	@frappe.whitelist()
 	def on_submit(self):
 		self.update_end_date()
 
+	@frappe.whitelist()
 	def update_end_date(self):
 		frappe.db.commit()
 		if self.workflow_state == "Done":
 			frappe.db.sql("""update `tabTransaction` set end_date = %s where name=%s """, (nowdate(), self.name))
 			self.reload()
 
-	def update_transaction_status(self):
-		x = (2 * self.estimated_duration)
+pass
 
-		if getdate(nowdate()) > getdate(add_to_date(self.start_date, days=self.estimated_duration)) and getdate(nowdate()) < getdate(add_to_date(self.start_date, days=x)):
-			self.status = 'Late'
-		elif getdate(add_to_date(self.start_date, days=x)) < getdate(nowdate()):
-			self.status = 'Too Late'
-		else:
-			self.status = 'Active'
 
-	pass
 
 @frappe.whitelist()
-def completed_progress():
-	completed = frappe.db.count('Requests Table')
+def update_transaction_status():
+	transactions = frappe.db.sql(""" select name, estimated_duration, start_date from `tabTransaction` where docstatus = 1""", as_dict=1)
 
-	asd = float(completed)
-	return asd
+	for x in transactions:
+		y = int(x.estimated_duration)
+		z = int(2 * x.estimated_duration)
+		update = ''
+		if getdate(nowdate()) > getdate(add_to_date(x.start_date, days=y)) and getdate(nowdate()) < getdate(add_to_date(x.start_date, days=z)):
+			update = ("""update `tabTransaction` set status = 'Late' where name=%s """, x.name)
+
+		elif getdate(add_to_date(x.start_date, days=z)) < getdate(nowdate()):
+			update = ("""update `tabTransaction` set status = 'Too Late' where name=%s """, x.name)
+
+		return update
+
+
+	"""
+	x = (2 * self.estimated_duration)
+
+	if getdate(nowdate()) > getdate(add_to_date(self.start_date, days=self.estimated_duration)) and getdate(nowdate()) < getdate(add_to_date(self.start_date, days=x)):
+		self.status = 'Late'
+	elif getdate(add_to_date(self.start_date, days=x)) < getdate(nowdate()):
+		self.status = 'Too Late'
+	else:
+		self.status = 'Active'
+	"""

@@ -37,7 +37,8 @@ def login(usr, pwd):
         "sid": frappe.session.sid,
         "api_key": user.api_key,
         "api_secret": api_generate,
-        "email": user.email
+        "email": user.email,
+        "user_type": user.role_profile_name
     }
 
     return
