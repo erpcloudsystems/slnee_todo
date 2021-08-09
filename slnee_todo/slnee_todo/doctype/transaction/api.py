@@ -59,13 +59,25 @@ def generate_keys(user):
 # ------------------------------------------------------------------------------------
 
 @frappe.whitelist()
-def add_transaction(transaction_name, start_date, priority,transaction_owner_name,estimated_duration,description,transaction_type,add_voice,employee,general_remarks,final_description):
-
-
+def add_transaction(transaction_name, priority, transaction_owner_name, estimated_duration, description, transaction_type, add_voice, employee, general_remarks, final_description,remark,current_situation):
+    user1 = frappe.get_doc('User', frappe.session.user)
+    remarkso = [
+        {
+            "doctype": "Remarks Table",
+            "remark": remark,
+            "user": ''
+        }
+    ]
+    situation = [
+        {
+            "doctype": "Current Situation Table",
+            "current_situation": current_situation,
+            "input_user": ''
+        }
+    ]
     transaction = frappe.get_doc({"doctype":"Transaction",
       "transaction_name": transaction_name,
       "transaction_owner_name": transaction_owner_name,
-      "start_date": start_date,
       "estimated_duration": estimated_duration,
       "priority": priority,
       "description": description,
@@ -73,6 +85,8 @@ def add_transaction(transaction_name, start_date, priority,transaction_owner_nam
       "add_voice": add_voice,
       "employee": employee,
       "general_remarks": general_remarks,
+      "remarks_table": remarkso,
+      "current_situation": situation,
       "final_description": final_description
 
     })
@@ -256,3 +270,15 @@ def list_attachments(transaction_id):
         return all_attachments
     else:
         return "لا يوجد مرفقات على المعامله !"
+
+@frappe.whitelist()
+def update_final_desc(transaction_id, desc):
+    doc = frappe.get_doc('Transaction', transaction_id)
+    doc.final_description = desc
+    doc.save()
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message":transaction_id,
+        "messag1e":doc.final_description
+    }
+    return message

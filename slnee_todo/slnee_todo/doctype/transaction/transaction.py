@@ -42,19 +42,23 @@ pass
 
 @frappe.whitelist()
 def update_transaction_status():
-	transactions = frappe.db.sql(""" select name, estimated_duration, start_date from `tabTransaction` where docstatus = 1""", as_dict=1)
+	transactions = frappe.db.sql(""" select name, estimated_duration, start_date from `tabTransaction` where docstatus != 2 and workflow_state != 'Done' """, as_dict=1)
 
 	for x in transactions:
 		y = int(x.estimated_duration)
 		z = int(2 * x.estimated_duration)
-		update = ''
+
 		if getdate(nowdate()) > getdate(add_to_date(x.start_date, days=y)) and getdate(nowdate()) < getdate(add_to_date(x.start_date, days=z)):
-			update = ("""update `tabTransaction` set status = 'Late' where name=%s """, x.name)
+			#update = ("""update `tabTransaction` set status = 'Late' where name=%s """, x.name)
+			frappe.db.set_value('Transaction', x.name, 'status', 'Late', update_modified=False)
+			#return update
 
 		elif getdate(add_to_date(x.start_date, days=z)) < getdate(nowdate()):
-			update = ("""update `tabTransaction` set status = 'Too Late' where name=%s """, x.name)
+			#update = ("""update `tabTransaction` set status = 'Too Late' where name=%s """, x.name)
+			#return update
+			frappe.db.set_value('Transaction', x.name, 'status', 'Too Late', update_modified=False)
 
-		return update
+
 
 
 	"""
