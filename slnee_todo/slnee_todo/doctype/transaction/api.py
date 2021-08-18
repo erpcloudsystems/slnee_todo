@@ -153,7 +153,7 @@ def transaction_remark(transaction_id, remark):
 # ------------------------------------------------------------------------------------
 
 @frappe.whitelist()
-def transaction_situation(transaction_id, current_situation):
+def transaction_situation(transaction_id, current_situation, current_date, current_user):
     remarks = frappe.get_doc({"doctype":"Current Situation Table",
       "parenttype": "Transaction",
       "parentfield": "current_situation",
@@ -239,7 +239,7 @@ def transaction_type_options():
 
 @frappe.whitelist()
 def list_employee():
-    all_employee = frappe.db.sql("""SELECT name,employee_name,department FROM `tabEmployee` where status ='Active'""",as_dict=True)
+    all_employee = frappe.db.sql("""SELECT name,full_name FROM `tabUser` where enabled=1 and role_profile_name in ('Todo User','Todo System Manager')""",as_dict=True)
 
     if all_employee:
         return all_employee
@@ -282,3 +282,153 @@ def update_final_desc(transaction_id, desc):
         "messag1e":doc.final_description
     }
     return message
+
+@frappe.whitelist()
+def send_to_employee(transaction_id, employee):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'Under Process')
+    frappe.db.set_value('Transaction', transaction_id, 'employee', employee)
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم تحويل المعاملة الى الموظف !"
+    }
+    return message
+
+@frappe.whitelist()
+def send_to_office_manager(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'With Office Manager')
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم تحويل المعاملة مدير مكتب سمو الامين !"
+    }
+    return message
+
+@frappe.whitelist()
+def approve(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'Done')
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تمت الموافقة على المعاملة !"
+    }
+    return message
+
+@frappe.whitelist()
+def request_modification(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'Modification Requested')
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم طلب تعديل المعاملة !"
+    }
+    return message
+
+@frappe.whitelist()
+def pause(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'Pending')
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم ايقاف المعاملة !"
+    }
+    return message
+
+@frappe.whitelist()
+def reopen(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'workflow_state', 'With Office Manager')
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم اعادة فتح المعاملة مرة اخرى !"
+    }
+    return message
+
+@frappe.whitelist()
+def views(transaction_id):
+    view_by = frappe.db.sql("""select distinct viewed_by,creation from `tabView Log` where reference_name = '{transaction_id}'""".format(transaction_id=transaction_id),as_dict=1)
+    if view_by:
+        return view_by
+
+@frappe.whitelist()
+def all_transactions_report():
+    all_transactions = frappe.db.sql("""
+				select
+						`tabTransaction`.name as name,
+						`tabTransaction`.transaction_number as transaction_number,
+						`tabTransaction`.workflow_state as workflow_state,
+						`tabTransaction`.transaction_owner_name as transaction_owner_name,
+						`tabTransaction`.transaction_name as transaction_name,
+						`tabTransaction`.transaction_type as transaction_type,
+						`tabTransaction`.start_date as start_date,
+						`tabTransaction`.end_date as end_date,
+						`tabTransaction`.status as status,
+		
+						(SELECT `tabCurrent Situation Table`.current_situation 
+						FROM `tabCurrent Situation Table`
+						WHERE `tabCurrent Situation Table`.parent = `tabTransaction`.name
+						ORDER BY idx DESC LIMIT 1) as current_situation,
+		
+						(SELECT GROUP_CONCAT('<li>',`tabRemarks Table`.remark order by idx separator '</li>')
+						FROM `tabRemarks Table`
+						WHERE `tabRemarks Table`.parent = `tabTransaction`.name) as remarks,
+		
+						(SELECT count(file_name)
+						FROM `tabFile`
+						WHERE `tabFile`.attached_to_name = `tabTransaction`.name) as attachments_no,
+						
+						(SELECT GROUP_CONCAT('<li>',`tabFile`.file_name order by idx separator '<li>')
+						FROM `tabFile`
+						WHERE `tabFile`.attached_to_name = `tabTransaction`.name) as attachments
+
+				from
+				`tabTransaction`
+				
+				where
+				`tabTransaction`.docstatus != 2
+					
+				ORDER BY `tabTransaction`.name desc
+				
+
+				""",as_dict=1)
+    if all_transactions:
+        return all_transactions
+
+
+@frappe.whitelist()
+def transaction_report(transaction_id):
+    all_transactions = frappe.db.sql("""
+				select
+						`tabTransaction`.name as name,
+						`tabTransaction`.transaction_number as transaction_number,
+						`tabTransaction`.workflow_state as workflow_state,
+						`tabTransaction`.transaction_owner_name as transaction_owner_name,
+						`tabTransaction`.transaction_name as transaction_name,
+						`tabTransaction`.transaction_type as transaction_type,
+						`tabTransaction`.start_date as start_date,
+						`tabTransaction`.end_date as end_date,
+						`tabTransaction`.status as status,
+
+						(SELECT `tabCurrent Situation Table`.current_situation 
+						FROM `tabCurrent Situation Table`
+						WHERE `tabCurrent Situation Table`.parent = `tabTransaction`.name
+						ORDER BY idx DESC LIMIT 1) as current_situation,
+
+						(SELECT GROUP_CONCAT('<li>',`tabRemarks Table`.remark order by idx separator '</li>')
+						FROM `tabRemarks Table`
+						WHERE `tabRemarks Table`.parent = `tabTransaction`.name) as remarks,
+
+						(SELECT count(file_name)
+						FROM `tabFile`
+						WHERE `tabFile`.attached_to_name = `tabTransaction`.name) as attachments_no,
+
+						(SELECT GROUP_CONCAT('<li>',`tabFile`.file_name order by idx separator '<li>')
+						FROM `tabFile`
+						WHERE `tabFile`.attached_to_name = `tabTransaction`.name) as attachments
+
+				from
+				`tabTransaction`
+
+				where
+				`tabTransaction`.docstatus != 2
+                and name = '{transaction_id}'
+				ORDER BY `tabTransaction`.name desc
+
+
+				""".format(transaction_id=transaction_id), as_dict=1)
+    if all_transactions:
+        return all_transactions
