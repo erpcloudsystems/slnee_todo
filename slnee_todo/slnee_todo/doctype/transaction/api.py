@@ -339,10 +339,20 @@ def reopen(transaction_id):
     return message
 
 @frappe.whitelist()
-def views(transaction_id):
-    view_by = frappe.db.sql("""select distinct viewed_by,creation from `tabView Log` where reference_name = '{transaction_id}'""".format(transaction_id=transaction_id),as_dict=1)
-    if view_by:
-        return view_by
+def views(transaction_id, employee):
+
+    #frappe.db.sql(""" insert into `tabView Log`
+     #(`name`,`viewed_by`,`modified`,`modified_by`,`owner`,`reference_doctype`,`reference_name`,`creation`)
+     #VALUES (CURRENT_TIMESTAMP(),'{employee}',CURRENT_TIMESTAMP(),'{employee}','{employee}','Transaction','{transaction_id}',CURRENT_TIMESTAMP()) """.format(transaction_id=transaction_id,employee=employee))
+    doc = frappe.get_doc('Transaction',transaction_id)
+    doc.add_seen(employee)
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تمت مشاهدة المعاملة !"
+    }
+    return message
+
+
 
 @frappe.whitelist()
 def all_transactions_report():
