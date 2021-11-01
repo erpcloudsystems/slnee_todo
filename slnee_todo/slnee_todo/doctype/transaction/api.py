@@ -4,12 +4,8 @@ from frappe import auth
 import datetime
 import json, ast
 
-
-
-
 current_date = datetime.datetime.today().strftime('%Y-%m-%d')
 current_user = frappe.session.user
-
 
 @frappe.whitelist(allow_guest=True)
 def login(usr, pwd):
@@ -442,3 +438,112 @@ def transaction_report(transaction_id):
 				""".format(transaction_id=transaction_id), as_dict=1)
     if all_transactions:
         return all_transactions
+
+@frappe.whitelist()
+def delete_trans(transaction_id):
+    frappe.db.delete("Transaction", {
+        "name": transaction_id
+    })
+    #if (trans):
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم حذف المعاملة بنجاح !"
+    }
+    return message
+   # else:
+    #    return "حدث خطأ ولم نتمكن من حذف المعاملة . برجاء المحاولة مرة اخري!"
+
+@frappe.whitelist()
+def delete_remark(remark_name,transaction_id):
+    frappe.db.delete("Remarks Table", {
+        "name": remark_name,
+        "parent": transaction_id
+    })
+    #if (trans):
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم حذف الملاحظة بنجاح !"
+    }
+    return message
+    #else:
+    #    return "حدث خطأ ولم نتمكن من حذف الملاحظة . برجاء المحاولة مرة اخري!"
+
+@frappe.whitelist()
+def delete_situation(situation_name, transaction_id):
+    frappe.db.delete("Current Situation Table", {
+        "name": situation_name,
+        "parenttype": "Transaction",
+        "parentfield": "current_situation",
+        "parent": transaction_id
+    })
+    #if (trans):
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم حذف الوضع الحالي بنجاح !"
+    }
+    return message
+    #else:
+    #    return "حدث خطأ ولم نتمكن من حذف الوضع الحالي . برجاء المحاولة مرة اخري!"
+
+@frappe.whitelist()
+def delete_final_desc(transaction_id):
+    frappe.db.set_value('Transaction', transaction_id, 'final_description', '')
+    #if (trans):
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم حذف الوضع النهائي !"
+    }
+    return message
+    #else:
+    #    return "حدث خطأ ولم نتمكن من حذف الوضع النهائي . برجاء المحاولة مرة اخري!"
+
+@frappe.whitelist()
+def update_desc(transaction_id,description):
+    frappe.db.sql(""" update `tabTransaction` set description = '{description}' where name = '{transaction_id}'""".format(description=description,transaction_id=transaction_id))
+    #frappe.db.set_value('Transaction', transaction_id, 'description', description)
+    #if(trans):
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم تعديل تفاصيل المعامله !"
+    }
+    return message
+    #else:return "حدث خطأ ولم نتمكن من تعديل تفاصيل المعامله . برجاء المحاولة مرة اخري!"
+
+
+@frappe.whitelist()
+def update_trans(transaction_id,transaction_name, priority, transaction_owner_name, estimated_duration, description,
+                    transaction_type, employee, final_description):
+    frappe.db.set_value('Transaction', transaction_id, 'transaction_name', transaction_name)
+    frappe.db.set_value('Transaction', transaction_id, 'priority', priority)
+    frappe.db.set_value('Transaction', transaction_id, 'transaction_owner_name', transaction_owner_name)
+    frappe.db.set_value('Transaction', transaction_id, 'estimated_duration', estimated_duration)
+    frappe.db.set_value('Transaction', transaction_id, 'description', description)
+    frappe.db.set_value('Transaction', transaction_id, 'employee', employee)
+    frappe.db.set_value('Transaction', transaction_id, 'final_description', final_description)
+    frappe.db.set_value('Transaction', transaction_id, 'transaction_type', transaction_type)
+    frappe.db.sql(
+        """ update `tabTransaction` set
+         transaction_name = '{transaction_name}' ,
+         priority = '{priority}',
+         transaction_owner_name = '{transaction_owner_name}', 
+         estimated_duration = '{estimated_duration}' ,
+         description = '{description}' ,
+         employee = '{employee}' ,
+         final_description = '{final_description}', 
+         transaction_type = '{transaction_type}' 
+         where name = '{transaction_id}'""".format(
+            transaction_name=transaction_name,
+            priority=priority,
+            transaction_owner_name=transaction_owner_name,
+            estimated_duration=estimated_duration,
+            description=description,
+            employee=employee,
+            final_description=final_description,
+            transaction_type=transaction_type,
+            transaction_id=transaction_id))
+    message = frappe.response["message"] = {
+        "success_key": True,
+        "message": "تم تعديل تفاصيل المعامله !"
+    }
+    return message
+
